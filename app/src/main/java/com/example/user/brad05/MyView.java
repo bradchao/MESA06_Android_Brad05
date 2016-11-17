@@ -9,10 +9,16 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+
 public class MyView extends View {
+    private LinkedList<HashMap<String,Float>> line;
+
     public MyView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setBackgroundColor(Color.BLACK);
+        line = new LinkedList<>();
     }
 
     @Override
@@ -20,7 +26,10 @@ public class MyView extends View {
         super.onDraw(canvas);
         Paint paint = new Paint();
         paint.setColor(Color.YELLOW);
-        canvas.drawCircle(100,100,40, paint);
+        //canvas.drawCircle(100,100,40, paint);
+
+        
+
     }
 
     @Override
@@ -28,11 +37,20 @@ public class MyView extends View {
         float ex = event.getX(), ey = event.getY();
 
         if (event.getAction() == MotionEvent.ACTION_DOWN){
-            Log.v("brad", "DOWN:" +ex + " x " +ey);
+            touchDownTask(ex, ey);
         }else if (event.getAction() == MotionEvent.ACTION_MOVE){
-            Log.v("brad", "MOVE:" +ex + " x " +ey);
+            touchMoveTask(ex, ey);
         }
-
         return true;
+    }
+    private void touchDownTask(float ex, float ey){
+        HashMap<String,Float> point = new HashMap<>();
+        point.put("x", ex); point.put("y", ey);
+        line.add(point);
+    }
+    private void touchMoveTask(float ex, float ey){
+        HashMap<String,Float> point = new HashMap<>();
+        point.put("x", ex); point.put("y", ey);
+        line.add(point);
     }
 }
