@@ -26,9 +26,18 @@ public class MyView extends View {
         super.onDraw(canvas);
         Paint paint = new Paint();
         paint.setColor(Color.YELLOW);
+        paint.setStrokeWidth(4);
         //canvas.drawCircle(100,100,40, paint);
 
-        
+        for (int i=1; i<line.size(); i++){
+            HashMap<String,Float> p0 = line.get(i-1);
+            HashMap<String,Float> p1 = line.get(i);
+            float x0 = p0.get("x"), y0 = p0.get("y");
+            float x1 = p1.get("x"), y1 = p1.get("y");
+            canvas.drawLine(x0,y0,x1,y1,paint);
+        }
+
+
 
     }
 
@@ -47,10 +56,12 @@ public class MyView extends View {
         HashMap<String,Float> point = new HashMap<>();
         point.put("x", ex); point.put("y", ey);
         line.add(point);
+        invalidate();
     }
     private void touchMoveTask(float ex, float ey){
         HashMap<String,Float> point = new HashMap<>();
         point.put("x", ex); point.put("y", ey);
         line.add(point);
+        invalidate();
     }
 }
