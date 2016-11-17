@@ -19,11 +19,13 @@ public class MyView extends View {
         super(context, attrs);
         setBackgroundColor(Color.BLACK);
         lines = new LinkedList<>();
+        Log.v("brad", "MyView()");
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        Log.v("brad", "onDraw()");
         Paint paint = new Paint();
         paint.setColor(Color.YELLOW);
         paint.setStrokeWidth(4);
@@ -57,12 +59,17 @@ public class MyView extends View {
         point.put("x", ex); point.put("y", ey);
         line.add(point);
         lines.add(line);
-        invalidate();
+        invalidate();   // Java => repaint()
     }
     private void touchMoveTask(float ex, float ey){
         HashMap<String,Float> point = new HashMap<>();
         point.put("x", ex); point.put("y", ey);
         lines.getLast().add(point);
+        invalidate();
+    }
+
+    void clear(){
+        lines.clear();
         invalidate();
     }
 }
