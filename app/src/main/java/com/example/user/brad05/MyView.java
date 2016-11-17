@@ -13,12 +13,12 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 public class MyView extends View {
-    private LinkedList<HashMap<String,Float>> line;
+    private LinkedList<LinkedList<HashMap<String,Float>>> lines;
 
     public MyView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setBackgroundColor(Color.BLACK);
-        line = new LinkedList<>();
+        lines = new LinkedList<>();
     }
 
     @Override
@@ -29,16 +29,15 @@ public class MyView extends View {
         paint.setStrokeWidth(4);
         //canvas.drawCircle(100,100,40, paint);
 
-        for (int i=1; i<line.size(); i++){
-            HashMap<String,Float> p0 = line.get(i-1);
-            HashMap<String,Float> p1 = line.get(i);
-            float x0 = p0.get("x"), y0 = p0.get("y");
-            float x1 = p1.get("x"), y1 = p1.get("y");
-            canvas.drawLine(x0,y0,x1,y1,paint);
+        for (LinkedList<HashMap<String,Float>> line : lines) {
+            for (int i = 1; i < line.size(); i++) {
+                HashMap<String, Float> p0 = line.get(i - 1);
+                HashMap<String, Float> p1 = line.get(i);
+                float x0 = p0.get("x"), y0 = p0.get("y");
+                float x1 = p1.get("x"), y1 = p1.get("y");
+                canvas.drawLine(x0, y0, x1, y1, paint);
+            }
         }
-
-
-
     }
 
     @Override
@@ -53,15 +52,17 @@ public class MyView extends View {
         return true;
     }
     private void touchDownTask(float ex, float ey){
+        LinkedList<HashMap<String,Float>> line = new LinkedList<>();
         HashMap<String,Float> point = new HashMap<>();
         point.put("x", ex); point.put("y", ey);
         line.add(point);
+        lines.add(line);
         invalidate();
     }
     private void touchMoveTask(float ex, float ey){
         HashMap<String,Float> point = new HashMap<>();
         point.put("x", ex); point.put("y", ey);
-        line.add(point);
+        lines.getLast().add(point);
         invalidate();
     }
 }
